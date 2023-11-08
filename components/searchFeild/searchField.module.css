@@ -1,0 +1,12 @@
+.searchField{
+    @media (max-width: $mantine-breakpoint-xs) {
+        display: none;        
+      }
+}
+
+.searchIcon { 
+    display: none;
+    @media (max-width: $mantine-breakpoint-xs) {
+        display: block;        
+      }
+}

@@ -1,12 +1,20 @@
 import "@mantine/core/styles.css";
+import '@mantine/code-highlight/styles.css';
+
+import classes from './globals.module.css'
 import React from "react";
-import { MantineProvider, ColorSchemeScript } from "@mantine/core";
+import { MantineProvider, ColorSchemeScript, Flex } from "@mantine/core";
 import { theme } from "../theme";
+import { MainHeader } from "../components/nav";
+import { FooterSocial } from "../components/footer";
+import { NavbarNested } from "../components/navMenu";
 
 export const metadata = {
-  title: "Mantine Next.js template",
-  description: "I am using Mantine with Next.js!",
+  title: "complexity study",
+  description: "build with love from RSD student",
 };
+
+
 
 export default function RootLayout({ children }: { children: any }) {
   return (
@@ -20,8 +28,19 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <MantineProvider defaultColorScheme="dark" theme={theme}>
+          <MainHeader />
+          <Flex justify={'flex-start'}  >
+            <div style={{ position: 'relative'  }} className={classes.hideNavBar} >
+              <div style={{ position: 'sticky', top : '0px' }} >
+                <NavbarNested />
+              </div>
+            </div>
+            {children}
+          </Flex>
+          <FooterSocial />
+        </MantineProvider>
       </body>
-    </html>
+    </html >
   );
 }
