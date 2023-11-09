@@ -23,14 +23,24 @@ const mainLinks = [
     { link: '#', label: 'Forums' },
 ];
 
-export function MainHeader() {
+
+type Props = {
+    mockdata: {
+        label: string,
+        icon: string,
+        link: string
+        links?: { label: string, link: string }[],
+    }[] | undefined
+}
+
+export function MainHeader( {mockdata}: Props ) {
     const [opened, { toggle }] = useDisclosure(false);
     const [active, setActive] = useState(0);
 
 
     const navDrawer = <Drawer opened={opened} onClose={toggle}>
         <>
-            <NavbarNested />
+            <NavbarNested  mockdata={mockdata} />
         </>
     </Drawer>
 

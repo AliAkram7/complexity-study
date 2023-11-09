@@ -1,61 +1,73 @@
 'use client'
-import { ScrollArea } from '@mantine/core';
+import { LoadingOverlay, ScrollArea } from '@mantine/core';
 import {
-    IconNotes,
-    IconCalendarStats,
-    IconGauge,
-    IconPresentationAnalytics,
-    IconFileAnalytics,
-    IconAdjustments,
-    IconLock,
+    TablerIconsProps,
+    IconNews,
 } from '@tabler/icons-react';
 import classes from './navMenu.module.css';
 import { LinksGroup } from '../linksGroup';
-const mockdata = [
-    { label: 'Dashboard', icon: IconGauge },
-    {
-        label: 'Market news',
-        icon: IconNotes,
-        initiallyOpened: true,
-        links: [
-            { label: 'Overview', link: '/' },
-            { label: 'Forecasts', link: '/' },
-            { label: 'Outlook', link: '/' },
-            { label: 'Real time', link: '/' },
-        ],
-    },
-    {
-        label: 'Releases',
-        icon: IconCalendarStats,
-        links: [
-            { label: 'Upcoming releases', link: '/' },
-            { label: 'Previous releases', link: '/' },
-            { label: 'Releases schedule', link: '/' },
-        ],
-    },
-    { label: 'Analytics', icon: IconPresentationAnalytics },
-    { label: 'Contracts', icon: IconFileAnalytics },
-    { label: 'Settings', icon: IconAdjustments },
-    {
-        label: 'Security',
-        icon: IconLock,
-        links: [
 
-            { label: 'Enable 2FA', link: '/' },
-            { label: 'Change password', link: '/' },
-            { label: 'Recovery codes', link: '/' },
-        ],
-    },
-];
 
-export function NavbarNested() {
 
-    const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
+import dynamic from 'next/dynamic';
+import React, { ComponentType } from 'react';
+import { nanoid } from 'nanoid';
+
+const iconMap: { [key: string]: ComponentType<TablerIconsProps> } = {
+    IconGauge: dynamic(() => import('@tabler/icons-react').then((mod) => mod.IconGauge)),
+    IconPresentationAnalytics: dynamic(() => import('@tabler/icons-react').then((mod) => mod.IconPresentationAnalytics)),
+    IconFileAnalytics: dynamic(() => import('@tabler/icons-react').then((mod) => mod.IconFileAnalytics)),
+    IconAdjustments: dynamic(() => import('@tabler/icons-react').then((mod) => mod.IconAdjustments)),
+    IconArrowsSort: dynamic(() => import('@tabler/icons-react').then((mod) => mod.IconArrowsSort)),
+};
+
+
+
+
+
+
+
+
+type Props = {
+    mockdata: {
+        label: string,
+        icon: string,
+        link: string
+        links?: { label: string, link: string }[],
+    }[] | undefined
+}
+
+
+
+export function NavbarNested({ mockdata }: Props) {
+
+
+
+    const transformedData = mockdata?.map((item) => {
+        if (typeof iconMap[item.icon] == 'function') {
+            const IconComponent = iconMap[item.icon];
+            return { ...item, icon: IconComponent };
+        }
+        else {
+            return { ...item, icon: IconNews };
+        }
+
+    })
+
+
+    const links = transformedData?.map((item) => <LinksGroup {...item} key={nanoid()} />);
+
+    const loading = <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} loaderProps={{ type: 'bars' }} />
 
     return (
-        <nav className={classes.navbar} style={{ width: '100%' }}>
+        <nav className={classes.navbar} >
             <ScrollArea className={classes.links}>
-                <div className={classes.linksInner}>{links}</div>
+                {
+                    links ?
+                        <div className={classes.linksInner}>{links}</div>
+                        : loading
+                }
+
             </ScrollArea>
         </nav>
     );

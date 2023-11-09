@@ -4,33 +4,43 @@ import { useState } from 'react';
 import { Box, Text, Group, rem } from '@mantine/core';
 import { IconListSearch } from '@tabler/icons-react';
 import classes from './tableContent.module.css';
+import { useRouter } from 'next/navigation';
 
-const links = [
-  { label: 'Usage', link: '#usage', order: 1 },
-  { label: 'Position and placement', link: '#position', order: 1 },
-  { label: 'With other overlays', link: '#overlays', order: 1 },
-  { label: 'Manage focus', link: '#focus', order: 1 },
-  { label: 'Examples', link: '#1', order: 1 },
-  { label: 'Show on focus', link: '#2', order: 2 },
-  { label: 'Show on hover', link: '#3', order: 2 },
-  { label: 'With form', link: '#4', order: 2 },
-];
 
-export function TableOfContentsFloating() {
-  const [active, setActive] = useState(2);
+
+type Props = {
+  links: {
+    label: string
+    link: string,
+    order: number
+  }[]
+}
+
+
+export function TableOfContentsFloating({ links }: Props) {
+  const [active, setActive] = useState(0);
+
+  const router = useRouter()
 
   const items = links.map((item, index) => (
     <Box<'a'>
       component="a"
       href={item.link}
-      
+
       onClick={(event) => {
         event.preventDefault();
+        router.push(item.link)
         setActive(index);
+        const targetElement = document.getElementById('introduction');
+        targetElement?.scrollIntoView({
+          behavior: 'smooth'
+        });
+
+
       }}
       key={item.label}
       className={cx(classes.link, { [classes.linkActive]: active === index })}
-      style={{ paddingLeft: `calc(${item.order} * var(--mantine-spacing-lg))` , paddingRight: '20px' }}
+      style={{ paddingLeft: `calc(${item.order} * var(--mantine-spacing-lg))`, paddingRight: '20px' }}
     >
       {item.label}
     </Box>

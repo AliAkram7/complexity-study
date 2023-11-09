@@ -4,37 +4,27 @@ import { HeaderArticle } from '../articleHeader';
 import { TableOfContentsFloating } from '../tableContent';
 import { CodeSpace } from '../codeSpace';
 import { constants } from 'buffer';
+import { nanoid } from 'nanoid';
 
 type Props = {
   paragraph: string
+
+  title: string
+  description?: string
+  list?: {
+    title: string,
+    description: string
+  }[]
+  content_table: { label: string, link: string, order: number }[]
+
 }
 
 
-const testcode = `
-import { CodeHighlightTabs } from '@mantine/code-highlight';
-import { Group, Button, MantineProvider, createTheme } from '@mantine/core';
-import classes from './Demo.module.css';
 
-const theme = createTheme({
-  components: {
-    Button: Button.extend({
-      classNames: classes,
-    }),
-  },
-});
 
-function Demo() {
-  return (
-    <MantineProvider theme={theme}>
-      <Group>
-        <Button variant="danger">Danger variant</Button>
-        <Button variant="primary">Primary variant</Button>
-      </Group>
-    </MantineProvider>
-  );
-}`
 
-export function Article({ paragraph }: Props) {
+
+export function Article({ title, description, list,content_table, paragraph }: Props) {
 
   const pieces = extractCodeBlocksAndText(paragraph);
 
@@ -42,8 +32,8 @@ export function Article({ paragraph }: Props) {
   const content = pieces.map((piece, index) => {
     if (piece.type === 'text') {
       return (
-        <div key={index}>
-          <TypographyStylesProvider>
+        <div key={nanoid()}  >
+          <TypographyStylesProvider style={{padding : '15px 10px'}} >
             <div dangerouslySetInnerHTML={{ __html: piece.content }} />
           </TypographyStylesProvider>
         </div>
@@ -59,10 +49,8 @@ export function Article({ paragraph }: Props) {
 
   return (
     <>
-      <div style={{ padding: '40px' }}>
-        <HeaderArticle title='insertion sort' description={`first sort will be Selection Sort a simple sorting method ,it repeatedly finds the minimum (or maximum) element
-    ,the found element is swapped with the first unsorted element (data) and process will continues until the array is sorted. Selection sort has a time complexity of O(n^2).
-`} list={[{ title: 'Insertion', description: 'description example' }]} />
+      <div style={{ padding: '10px' }}>
+        <HeaderArticle title={title} description={description} list={list} />
 
         <Divider />
       </div>
@@ -84,7 +72,7 @@ export function Article({ paragraph }: Props) {
 
 
         >
-          <TableOfContentsFloating />
+          <TableOfContentsFloating links={content_table} />
         </Grid.Col>
 
         <Grid.Col
@@ -93,7 +81,7 @@ export function Article({ paragraph }: Props) {
         >
           <div style={{
             padding: '0 30px',
-           
+
           }} >
             {content}
           </div>

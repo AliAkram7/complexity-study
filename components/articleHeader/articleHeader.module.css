@@ -3,6 +3,7 @@
     justify-content: space-between;
     padding-top: calc(var(--mantine-spacing-md));
     padding-bottom: calc(var(--mantine-spacing-md));
+    padding-left: calc(var(--mantine-spacing-xl));
   }
   
   .content {

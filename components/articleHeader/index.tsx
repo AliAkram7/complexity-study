@@ -21,37 +21,39 @@ export function HeaderArticle({ title, description, list }: Props) {
 
     const item = list?.map((item) => {
         return (
-            <List   
-                key={nanoid()}
-                mt={30}
-                spacing="sm"
-                size="sm"
-                icon={
-                    <ThemeIcon size={20} radius="xl">
-                        <IconCheck style={{ width: 30, height: 30 }} stroke={1.5} />
-                    </ThemeIcon>
-                }
-            >
-                <List.Item>
-                    <b>{item.title}</b> – {item.description}
-                </List.Item>
-            </List>)
+
+            <List.Item key={nanoid()}>
+                <b>{item.title}</b> – {item.description}
+            </List.Item>
+        )
     })
 
 
     return (
         // <Container >
-            <div className={classes.inner}>
-                <div className={classes.content}>
-                    <Title className={classes.title}>
-                        {title}
-                    </Title>
-                    <Text c="dimmed" mt="md">
-                        {description}
-                    </Text>
+        <div className={classes.inner}>
+            <div className={classes.content}>
+                <Title className={classes.title}>
+                    {title}
+                </Title>
+                <Text c="dimmed" mt="md">
+                    {description}
+                </Text>
+                <List
+                    key={nanoid()}
+                    mt={30}
+                    spacing="sm"
+                    size="sm"
+                    icon={
+                        <ThemeIcon size={25} radius="xl"  >
+                            <IconCheck style={{ width: 20, height: 20 }} stroke={1.5} />
+                        </ThemeIcon>
+                    }
+                >
                     {item}
-                </div>
+                </List>
             </div>
+        </div >
         // </Container>
     );
 }
