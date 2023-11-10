@@ -10,7 +10,7 @@ type Props = {
     title: string
     description?: string
     list?: {
-        title: string,
+        label: string,
         description: string
     }[]
 }
@@ -23,7 +23,7 @@ export function HeaderArticle({ title, description, list }: Props) {
         return (
 
             <List.Item key={nanoid()}>
-                <b>{item.title}</b> – {item.description}
+                <b>{item.label}</b> – {item.description}
             </List.Item>
         )
     })

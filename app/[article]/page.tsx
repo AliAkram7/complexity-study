@@ -9,7 +9,7 @@ type Article = {
   article_title: string,
   article_description: string,
   address_link: string,
-  description_list: { title: string, description: string }[] ,
+  description_list: { label: string, description: string }[] ,
   content_table: { label: string, link:string, order: number }[],
   article_content: string
 }

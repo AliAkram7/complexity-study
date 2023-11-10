@@ -12,7 +12,7 @@ type Props = {
   title: string
   description?: string
   list?: {
-    title: string,
+    label: string,
     description: string
   }[]
   content_table: { label: string, link: string, order: number }[]

@@ -6,5 +6,5 @@ type Props = {
 
 }
 export function CodeSpace({ code, lang }: Props) {
-    return <CodeHighlight   mt="md" code={code} language={lang} />;
+    return <CodeHighlight   mt="md" code={code} language={'c'} />;
 }
