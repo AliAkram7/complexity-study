@@ -4,7 +4,7 @@ import { Container, Group, Burger, Box, Image, Flex, ActionIcon, Drawer } from '
 import { useDisclosure } from '@mantine/hooks';
 import classes from './nav.module.css';
 import { IconBrandGithub, IconBrandTelegram, IconCode } from '@tabler/icons-react';
-import { SearchField } from '../searchFeild';
+import { SearchFelid } from '../searchFelid';
 import { ToggleColorScheme } from '../colorSchemeToggle';
 import { NavbarNested } from '../navMenu';
 
@@ -56,7 +56,7 @@ export function MainHeader( {mockdata}: Props ) {
                         </ActionIcon>
                         <Flex justify={'space-between'} >
                             <Group justify="flex-end" align='center' >
-                                <SearchField />
+                                <SearchFelid />
                                 <ToggleColorScheme />
                                 <ActionIcon size="lg" color="gray" variant="subtle">
                                     <IconBrandGithub style={{ width: 50, height: 50 }} stroke={1.5} />

@@ -2,7 +2,7 @@ import { TextInput, TextInputProps, ActionIcon, useMantineTheme, rem } from '@ma
 import { IconSearch, IconArrowRight } from '@tabler/icons-react';
 
 import classes from './searchField.module.css'
-export function SearchField(props: TextInputProps) {
+export function SearchFelid(props: TextInputProps) {
     const theme = useMantineTheme();
 
 

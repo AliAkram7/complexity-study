@@ -4,7 +4,7 @@ import { PostgrestSingleResponse, createClient } from '@supabase/supabase-js'
 import classes from './article.module.css'
 import { Center } from '@mantine/core'
 import NotFound from './not-found'
-import { supabase } from '../../utiles/supabase'
+import { supabase } from '../../utils/utils'
 
 type Article = {
   article_title: string,

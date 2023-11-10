@@ -8,52 +8,39 @@ import { theme } from "../theme";
 import { MainHeader } from "../components/nav";
 import { FooterSocial } from "../components/footer";
 import { NavbarNested } from "../components/navMenu";
-import { PostgrestSingleResponse, createClient } from "@supabase/supabase-js";
-import { mock } from "node:test";
+import { supabase } from "../utils/utils";
 
 export const metadata = {
   title: "complexity study",
   description: "build with love from RSD student",
 };
 
+type MockData = {
+  label: string;
+  icon: string;
+  link: string;
+  links?: { label: string, link: string }[];
+}[] | undefined
+
 
 
 export default async function RootLayout({ children }: { children: any }) {
 
 
-  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "")
-
-
-
-
-
-  let { data: category, error } = await supabase
+  let { data: category } = await supabase
     .from('category')
     .select(`
     *,
     article (
-      category_id,
       article_title,
       address_link
-
     )
   `)
 
 
-  // console.log(category)
-
-  type MockData = {
-    label: string;
-    icon: string;
-    link: string;
-    links?: { label: string, link: string }[];
-  }[] | undefined
-
-
-
   const mockdata: MockData = category?.map((item => {
 
-    if (item?.article.length > 0) {
+    if (item?.article?.length > 0) {
       return {
         label: item.name,
         icon: item.icon || "",
