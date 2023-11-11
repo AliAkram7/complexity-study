@@ -1,11 +1,16 @@
-import { TextInput, TextInputProps, ActionIcon, useMantineTheme, rem } from '@mantine/core';
+import { TextInput, TextInputProps, ActionIcon, useMantineTheme, rem, Badge, Kbd } from '@mantine/core';
 import { IconSearch, IconArrowRight } from '@tabler/icons-react';
 
 import classes from './searchField.module.css'
-export function SearchFelid(props: TextInputProps) {
+import { getHotkeyHandler, useHotkeys } from '@mantine/hooks';
+
+
+type Props = {
+    openModal: () => void
+}
+
+export function SearchFelid({ openModal}: Props) {
     const theme = useMantineTheme();
-
-
 
     return (
         <>
@@ -14,20 +19,26 @@ export function SearchFelid(props: TextInputProps) {
                 radius="xl"
                 size="md"
                 display={'false'}
-                placeholder="Search questions"
+                placeholder="Search Article"
                 rightSectionWidth={42}
-                leftSection={<IconSearch style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
+                leftSection={<IconSearch  onClick={openModal}  style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
+                value=''
+                onChange={openModal}
+                onClick={openModal}
                 rightSection={
-                    <ActionIcon size={32} radius="xl" color={theme.primaryColor} variant="filled">
-                        <IconArrowRight style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
-                    </ActionIcon>
+                    <>
+                        <Kbd  onClick={openModal} variant='light'>/</Kbd>
+                        {/* <ActionIcon size={32} radius="xl" color={theme.primaryColor} variant="filled">
+                            <IconArrowRight style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+                        </ActionIcon> */}
+                    </>
                 }
-                {...props}
+            
             />
-            <div className={classes.searchIcon}>
-            <ActionIcon  size="lg" radius={'xl'} variant="filled">
-                <IconSearch  style={{ width: 20, height: 20 }}  />
-            </ActionIcon>
+            <div className={classes.searchIcon}   >
+                <ActionIcon size="lg" onClick={openModal} radius={'xl'} variant="filled">
+                    <IconSearch style={{ width: 20, height: 20 }} />
+                </ActionIcon>
             </div>
 
         </>

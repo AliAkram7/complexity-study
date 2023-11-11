@@ -1,6 +1,6 @@
 'use client'
-import { Container, Title, Text, List, ThemeIcon, rem } from '@mantine/core';
-import { IconCheck } from '@tabler/icons-react';
+import { Container, Title, Text, List, ThemeIcon, rem, Blockquote } from '@mantine/core';
+import { IconCheck, IconInfoCircle, IconNews } from '@tabler/icons-react';
 // import image from './image.svg';
 import classes from './articleHeader.module.css';
 import { nanoid } from 'nanoid';
@@ -8,6 +8,7 @@ import { nanoid } from 'nanoid';
 
 type Props = {
     title: string
+    author: string
     description?: string
     list?: {
         label: string,
@@ -16,7 +17,7 @@ type Props = {
 }
 
 
-export function HeaderArticle({ title, description, list }: Props) {
+export function HeaderArticle({ title, author,description, list }: Props) {
 
 
     const item = list?.map((item) => {
@@ -33,9 +34,13 @@ export function HeaderArticle({ title, description, list }: Props) {
         // <Container >
         <div className={classes.inner}>
             <div className={classes.content}>
-                <Title className={classes.title}>
-                    {title}
-                </Title>
+
+
+                <Blockquote fz={'lg'} radius="md" iconSize={44} cite={author} icon={<IconNews />} mt="xl">
+                    <Title className={classes.title}>
+                        {title}
+                    </Title>
+                </Blockquote>
                 <Text c="dimmed" mt="md">
                     {description}
                 </Text>

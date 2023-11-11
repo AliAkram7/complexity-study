@@ -1,12 +1,19 @@
-.searchField{
-    @media (max-width: $mantine-breakpoint-xs) {
-        display: none;        
-      }
+.searchField {
+
+
+  cursor: pointer;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    display: none;
+  }
+
 }
 
-.searchIcon { 
-    display: none;
-    @media (max-width: $mantine-breakpoint-xs) {
-        display: block;        
-      }
+
+.searchIcon {
+  display: none;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    display: block;
+  }
 }

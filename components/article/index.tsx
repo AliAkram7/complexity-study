@@ -1,15 +1,17 @@
 'use client'
-import { Divider, Flex, Grid, SimpleGrid, TypographyStylesProvider, rem } from '@mantine/core';
+import { Divider, Flex, Grid, SimpleGrid, TypographyStylesProvider, rem, useMantineTheme } from '@mantine/core';
 import { HeaderArticle } from '../articleHeader';
 import { TableOfContentsFloating } from '../tableContent';
 import { CodeSpace } from '../codeSpace';
-import { constants } from 'buffer';
 import { nanoid } from 'nanoid';
+
+import classes from './article.module.css'
 
 type Props = {
   paragraph: string
 
   title: string
+  author: string
   description?: string
   list?: {
     label: string,
@@ -21,19 +23,21 @@ type Props = {
 
 
 
+export function Article({ title, author, description, list, content_table, paragraph }: Props) {
+
+  const theme = useMantineTheme()
 
 
-
-export function Article({ title, description, list,content_table, paragraph }: Props) {
 
   const pieces = extractCodeBlocksAndText(paragraph);
+
 
   // Render the pieces with CodeSpace components.
   const content = pieces.map((piece, index) => {
     if (piece.type === 'text') {
       return (
         <div key={nanoid()}  >
-          <TypographyStylesProvider style={{padding : '15px 10px'}} >
+          <TypographyStylesProvider style={{ padding: '15px 10px' }} >
             <div dangerouslySetInnerHTML={{ __html: piece.content }} />
           </TypographyStylesProvider>
         </div>
@@ -41,7 +45,7 @@ export function Article({ title, description, list,content_table, paragraph }: P
     } else {
       return (
         <div key={index}>
-          <CodeSpace code={piece.content} lang="tsx" />
+          <CodeSpace code={piece.content} lang={piece.lang} />
         </div>
       );
     }
@@ -49,48 +53,21 @@ export function Article({ title, description, list,content_table, paragraph }: P
 
   return (
     <>
-      <div style={{ padding: '10px' }}>
-        <HeaderArticle title={title} description={description} list={list} />
-
+      <div style={{ padding: '10px 20px' }}>
+        <HeaderArticle author={author} title={title} description={description} list={list} />
         <Divider />
       </div>
 
-      <Grid
-        justify="space-between"
+      <Flex className={classes.ArticleAndContentTableContainerFlex} >
 
-        // align="stretch"
-        // grow
-        columns={12}
-      >
-        <Grid.Col
-          order={{ base: 1, lg: 2 }}
-          span={{ base: 12, sm: 12, lg: 3 }}
-          style={{
-            padding: '10px 30px',
-
-          }}
-
-
-        >
+        <div className={classes.articleContent}>
+          {content}
+        </div>
+        <div className={classes.ContentTable}>
           <TableOfContentsFloating links={content_table} />
-        </Grid.Col>
+        </div>
 
-        <Grid.Col
-          order={{ base: 2, lg: 1 }}
-          span={{ base: 12, sm: 12, lg: 9 }}
-        >
-          <div style={{
-            padding: '0 30px',
-
-          }} >
-            {content}
-          </div>
-        </Grid.Col>
-
-
-
-
-      </Grid  >
+      </Flex>
 
     </>
   );
@@ -102,13 +79,25 @@ export function Article({ title, description, list,content_table, paragraph }: P
 function extractCodeBlocksAndText(paragraph: string) {
   const blocksAndText = paragraph.split('```');
   const result = [];
+  let currentLang = '';
+
+
   for (let i = 0; i < blocksAndText.length; i++) {
     if (i % 2 === 0) {
       // Text piece
       result.push({ type: 'text', content: blocksAndText[i] });
     } else {
+      const blockContent = blocksAndText[i].trim();
+      const langMatch = blockContent.match(/^(\S+)(?:\s|$)/); // Extract the language reference
       // Code block
-      result.push({ type: 'code', content: blocksAndText[i] });
+      if (langMatch) {
+        currentLang = langMatch[1];
+        const codeWithoutLang = blockContent.replace(langMatch[0], '').trim();
+        result.push({ type: 'code', content: codeWithoutLang, lang: currentLang });
+      } else {
+        // If no language reference found, use the current language reference
+        result.push({ type: 'code', content: blockContent, lang: currentLang });
+      }
     }
   }
   return result;

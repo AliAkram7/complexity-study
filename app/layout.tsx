@@ -2,13 +2,14 @@ import "@mantine/core/styles.css";
 import '@mantine/code-highlight/styles.css';
 
 import classes from './globals.module.css'
-import React from "react";
+import React, { ComponentType, useMemo } from "react";
 import { MantineProvider, ColorSchemeScript, Flex, LoadingOverlay } from "@mantine/core";
 import { theme } from "../theme";
 import { MainHeader } from "../components/nav";
 import { FooterSocial } from "../components/footer";
 import { NavbarNested } from "../components/navMenu";
 import { supabase } from "../utils/utils";
+import { IconHash, TablerIconsProps } from "@tabler/icons-react";
 
 export const metadata = {
   title: "complexity study",
@@ -24,6 +25,16 @@ type MockData = {
 
 
 
+
+type SearchOption = {
+  label: string;
+  link: string
+  description?: string,
+  links?: { label: string; link: string, icon?: string }[]
+}[] | null;
+
+
+
 export default async function RootLayout({ children }: { children: any }) {
 
 
@@ -32,21 +43,19 @@ export default async function RootLayout({ children }: { children: any }) {
     .select(`
     *,
     article (
-      article_title,
-      address_link
+      *
     )
   `)
 
 
   const mockdata: MockData = category?.map((item => {
-
     if (item?.article?.length > 0) {
       return {
         label: item.name,
         icon: item.icon || "",
-        link: item.category_address_link,
+        link: "/" + item.category_address_link,
         links: item.article?.map((article: { article_title: any; address_link: any; }) => {
-          return { label: article.article_title, link: article.address_link }
+          return { label: article.article_title, link: "/" + item.category_address_link + "/" + article.address_link }
         }),
       }
     }
@@ -58,6 +67,41 @@ export default async function RootLayout({ children }: { children: any }) {
       }
     }
   }))
+
+
+  let { data: searchMetaData } = await supabase
+    .from('article')
+    .select(`article_title, address_link,article_description, content_table, category(category_address_link)`)
+    .returns<{
+      article_title: string,
+      address_link: string,
+      article_description: string,
+      content_table: { label: string, link: string, order : number }[],
+      category: { category_address_link: string }
+    }[]>()
+
+
+
+
+
+  const searchOptionMeta: SearchOption = searchMetaData?.map(art => {
+
+    return {
+      label: art.article_title,
+      description: art.article_description,
+      link: "/" + art.category?.category_address_link + "/" + art.address_link,
+      links: art.content_table?.filter(item => item.order == 1).map((item: any) => {
+        return {
+          label: item.label,
+          link: "/" + art.category?.category_address_link + "/" + art.address_link + item.link,
+          icon: 'IconHash'
+        }
+    })
+    }
+
+  }) || []
+
+
 
 
 
@@ -74,7 +118,7 @@ export default async function RootLayout({ children }: { children: any }) {
       </head>
       <body>
         <MantineProvider defaultColorScheme="dark" theme={theme}>
-          <MainHeader  mockdata={mockdata} />
+          <MainHeader searchMetaData={searchOptionMeta} mockdata={mockdata} />
           <Flex justify={'flex-start'}  >
             <div style={{ position: 'relative' }} className={classes.hideNavBar} >
               <div style={{ position: 'sticky', top: '0px' }} >

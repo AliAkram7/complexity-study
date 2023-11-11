@@ -1,10 +1,14 @@
 'use client'
-import { CodeHighlight } from '@mantine/code-highlight';
+import { CodeHighlightTabs } from '@mantine/code-highlight';
 type Props = {
     code: string,
-    lang: string,
+    lang?: string,
 
 }
 export function CodeSpace({ code, lang }: Props) {
-    return <CodeHighlight   mt="md" code={code} language={'c'} />;
+    return <CodeHighlightTabs mt="md"
+        code={[
+            { fileName: `Demo.${lang}`, code: code, language: lang || "tsx" },
+        ]}
+    />;
 }

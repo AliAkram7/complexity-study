@@ -1,59 +1,62 @@
 'use client'
-import { ComponentType, useState } from 'react';
+import { ComponentType, useCallback, useState } from 'react';
 import { Group, Box, Collapse, ThemeIcon, Text, UnstyledButton, rem } from '@mantine/core';
-import {  IconChevronRight } from '@tabler/icons-react';
+import { IconChevronRight, IconHash } from '@tabler/icons-react';
 import classes from './linksGroup.module.css';
 import { TablerIconsProps } from '@tabler/icons-react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface LinksGroupProps {
   icon: ComponentType<TablerIconsProps>;
   label: string;
   link: string
-  initiallyOpened?: boolean;
-  links?: { label: string; link: string }[];
+  links?: { label: string; link: string, icon?: string }[];
 }
 
-export function LinksGroup({ icon: Icon, label, link, initiallyOpened, links }: LinksGroupProps) {
+export function LinksGroup({ icon: Icon, label, link, links }: LinksGroupProps) {
   const hasLinks = Array.isArray(links);
-  const [opened, setOpened] = useState(initiallyOpened || false);
+  const [opened, setOpened] = useState(true);
+
+
   const items = (hasLinks ? links : []).map((link) => (
-    <Text<'a'>
-      component="a"
+    <Text
+      component={Link}
       className={classes.linkLabel}
       href={link.link}
       key={link.label}
-      onClick={(event) => {event.preventDefault()
-        router.push(link.link)
-      }
-      }
+
     >
-      {link.label}
+      <Box style={{ display: 'flex', alignItems: 'center', gap: '5px', justifyContent: 'flex-start' }}>
+        {link.icon ?
+
+          <ThemeIcon variant="transparent" size={18}>
+            <IconHash style={{ width: 20, height: 20 }} />
+          </ThemeIcon>
+
+          : null}
+        {link.label}
+      </Box >
     </Text>
   ));
 
-  const router = useRouter()
-  const handleOpenCategory = () => {
-    setOpened((o) => !o)
-    router.push(link)
-
-
-  }
+  const handleOpenCategory = useCallback(() => {
+    // e.preventDefault()
+    // setOpened((o) => !o)
+    // router.push(link)
+  }, [])
 
   return (
     <>
-      <UnstyledButton onClick={handleOpenCategory} className={classes.control}>
+      <UnstyledButton component={Link} href={link} onClick={handleOpenCategory} className={classes.control}>
         <Group justify="space-between" gap={0}>
-
-          <Box  style={{ display: 'flex', alignItems: 'center',gap:'5px', justifyContent:'flex-start' }}>
+          <Box style={{ display: 'flex', alignItems: 'center', gap: '5px', justifyContent: 'flex-start' }}>
             <ThemeIcon variant="transparent" size={18}>
               <Icon style={{ width: 18, height: 18 }} />
             </ThemeIcon>
             <Box>{label}</Box>
           </Box>
 
-
-          {hasLinks && (
+          {/* {hasLinks && (
             <IconChevronRight
               className={classes.chevron}
               stroke={1.5}
@@ -63,7 +66,7 @@ export function LinksGroup({ icon: Icon, label, link, initiallyOpened, links }: 
                 transform: opened ? 'rotate(-90deg)' : 'none',
               }}
             />
-          )}
+          )} */}
         </Group>
       </UnstyledButton>
       {hasLinks ? <Collapse in={opened} ml="md" >{items}</Collapse> : null}

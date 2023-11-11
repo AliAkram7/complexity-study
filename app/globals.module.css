@@ -7,3 +7,13 @@
       }
 }
 
+
+
+.articleContainer {
+
+  min-height: 100vh;
+  width: 90%;
+  @media (max-width: $mantine-breakpoint-lg) {
+      width: 100%;
+  }
+}

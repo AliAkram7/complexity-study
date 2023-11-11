@@ -28,13 +28,12 @@ export function TableOfContentsFloating({ links }: Props) {
       href={item.link}
 
       onClick={(event) => {
-        event.preventDefault();
-        router.push(item.link)
-        setActive(index);
-        const targetElement = document.getElementById('introduction');
+        // event.preventDefault();
+        const targetElement = document.getElementById(item.link);
         targetElement?.scrollIntoView({
           behavior: 'smooth'
         });
+        setActive(index);
 
 
       }}
@@ -42,13 +41,16 @@ export function TableOfContentsFloating({ links }: Props) {
       className={cx(classes.link, { [classes.linkActive]: active === index })}
       style={{ paddingLeft: `calc(${item.order} * var(--mantine-spacing-lg))`, paddingRight: '20px' }}
     >
-      {item.label}
+      <Text>
+        {item.label}
+      </Text>
     </Box>
   ));
 
   return (
-    <div className={classes.root}>
-      <Group mb="md">
+    <div className={classes.root}  >
+
+      <Group mb="md" >
         <IconListSearch style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
         <Text>Table of contents</Text>
       </Group>
@@ -61,6 +63,7 @@ export function TableOfContentsFloating({ links }: Props) {
         />
         {items}
       </div>
+
     </div>
   );
 }

@@ -10,7 +10,7 @@ import { LinksGroup } from '../linksGroup';
 
 
 import dynamic from 'next/dynamic';
-import React, { ComponentType } from 'react';
+import React, { ComponentType, useMemo } from 'react';
 import { nanoid } from 'nanoid';
 
 const iconMap: { [key: string]: ComponentType<TablerIconsProps> } = {
@@ -42,32 +42,33 @@ type Props = {
 export function NavbarNested({ mockdata }: Props) {
 
 
+    const transformedData = useMemo(() => {
+        return mockdata?.map((item) => {
+            if (typeof iconMap[item.icon] == 'function') {
+                const IconComponent = iconMap[item.icon];
+                return { ...item, icon: IconComponent };
+            }
+            else {
+                return { ...item, icon: IconNews };
+            }
 
-    const transformedData = mockdata?.map((item) => {
-        if (typeof iconMap[item.icon] == 'function') {
-            const IconComponent = iconMap[item.icon];
-            return { ...item, icon: IconComponent };
-        }
-        else {
-            return { ...item, icon: IconNews };
-        }
-
-    })
+        })
+    }, [mockdata])
 
 
-    const links = transformedData?.map((item) => <LinksGroup {...item} key={nanoid()} />);
+    const links = useMemo(() => transformedData?.map((item) => <LinksGroup {...item} key={item.label} />), [transformedData])
+
+
 
     const loading = <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} loaderProps={{ type: 'bars' }} />
 
     return (
         <nav className={classes.navbar} >
             <ScrollArea className={classes.links}>
-                {
-                    links ?
-                        <div className={classes.linksInner}>{links}</div>
-                        : loading
+                {links ?
+                    <div className={classes.linksInner}>{links}</div>
+                    : loading
                 }
-
             </ScrollArea>
         </nav>
     );
