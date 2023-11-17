@@ -1,6 +1,6 @@
 'use client'
 
-import { Combobox, Flex, InputBase, useCombobox } from '@mantine/core';
+import { Combobox, Flex, InputBase, ScrollArea, useCombobox } from '@mantine/core';
 import { IconHash, IconNews, TablerIconsProps } from '@tabler/icons-react';
 import React, { ComponentType, useState } from 'react'
 import { LinksGroup } from '../linksGroup';
@@ -14,25 +14,28 @@ type Mockdata = {
 }[];
 
 
-type Props = { 
+type Props = {
 
-    mockData : Mockdata
-    closeModal : ()=>void
+    mockData: Mockdata
+    closeModal: () => void
 }
 
 
-export default function SearchOptions({closeModal, mockData} : Props ) {
+export default function SearchOptions({ closeModal, mockData }: Props) {
 
     const combobox = useCombobox({
-        onDropdownClose: () => combobox.resetSelectedOption() ,
+        onDropdownClose: () => combobox.resetSelectedOption(),
     });
+
 
     const [value, setValue] = useState<string | null>(null);
     const [search, setSearch] = useState('');
 
 
+
     const shouldFilterOptions = mockData.every((item) => item.label !== search);
 
+    
 
     const filteredOptions = shouldFilterOptions
         ? mockData.filter((item) => {
@@ -69,7 +72,7 @@ export default function SearchOptions({closeModal, mockData} : Props ) {
                 <Combobox.Target>
                     <InputBase
                         rightSection={<Combobox.Chevron />}
-                        onClick={() => {combobox.openDropdown()} }
+                        onClick={() => { combobox.openDropdown() }}
                         onFocus={() => combobox.openDropdown()}
                         onBlur={() => {
                             combobox.closeDropdown();
@@ -88,7 +91,15 @@ export default function SearchOptions({closeModal, mockData} : Props ) {
 
                 <Combobox.Dropdown>
                     <Combobox.Options>
-                        {options.length > 0 ? options : <Combobox.Empty>Nothing found</Combobox.Empty>}
+
+                        {options.length > 0 ?
+                            <ScrollArea h={'300px'}
+                                scrollbarSize={'xs'}
+                            >
+                                {options}
+                            </ScrollArea>
+                            : <Combobox.Empty>Nothing found</Combobox.Empty>}
+
                     </Combobox.Options>
                 </Combobox.Dropdown>
             </Combobox>        </>

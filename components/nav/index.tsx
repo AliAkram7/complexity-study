@@ -49,9 +49,10 @@ export function MainHeader({ searchMetaData, mockdata }: Props) {
     const searchModal = <><Modal
         yOffset={'15dvh'}
         size={'lg'}
+        withCloseButton={false}
         // centered
         opened={modalOpened}
-        onClose={closeModal}
+        onClose={closeModal} 
         title="Search Article"
         scrollAreaComponent={ScrollArea.Autosize}
     >

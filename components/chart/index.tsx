@@ -12,7 +12,7 @@ import {
     Legend,
     TimeScale,
 } from "chart.js";
-import { ScrollArea, useMantineTheme } from '@mantine/core';
+import { ScrollArea } from '@mantine/core';
 import { useViewportSize } from '@mantine/hooks';
 
 ChartJS.register(
@@ -72,7 +72,7 @@ export default function LineChartComponentSquare2({ title, dataset, x }: Props) 
                     display: true,
                     text: 'n'
                 },
-                max: 15
+                max: 40
             },
             y: {
                 title: {

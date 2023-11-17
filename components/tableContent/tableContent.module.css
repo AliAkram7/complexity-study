@@ -6,7 +6,6 @@
   top: 30px;
 
   @media (max-width: $mantine-breakpoint-lg) {
-
     position: relative;
     top: 0;
   }
@@ -19,7 +18,7 @@
   color: var(--mantine-color-text);
   line-height: var(--link-height);
   font-size: var(--mantine-font-size-sm);
-  /* height: var(--link-height); */
+  height: var(--link-height);
   /* width: 100%; */
   border-top-right-radius: var(--mantine-radius-sm);
   border-bottom-right-radius: var(--mantine-radius-sm);
@@ -37,6 +36,7 @@
   color: light-dark(var(--mantine-color-teal-7), var(--mantine-color-teal-4));
 }
 
+
 .indicator {
   transition: transform 150ms ease;
   border: rem(2px) solid light-dark(var(--mantine-color-teal-7), var(--mantine-color-teal-4));
@@ -46,4 +46,5 @@
   border-radius: var(--indicator-size);
   position: absolute;
   left: calc(var(--indicator-size) / -2 + rem(1));
+
 }

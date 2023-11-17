@@ -26,7 +26,14 @@ export function LinksGroup({ icon: Icon, label, link, links }: LinksGroupProps) 
       key={link.label}
 
     >
-      <Box style={{ display: 'flex', alignItems: 'center', gap: '5px', justifyContent: 'flex-start' }}>
+      <Box
+       style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '5px',
+        justifyContent: 'flex-start',
+        
+      }}>
         {link.icon ?
 
           <ThemeIcon variant="transparent" size={18}>
