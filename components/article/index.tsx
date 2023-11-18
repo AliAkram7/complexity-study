@@ -102,3 +102,36 @@ function extractCodeBlocksAndText(paragraph: string) {
   }
   return result;
 }
+
+function extractChartAndCodeBlocksAndText(paragraph: string) {
+  const blocksAndText = paragraph.split('````');
+  const result = [];
+  let currentLang = '';
+
+  for (let i = 0; i < blocksAndText.length; i++) {
+    if (i % 2 === 0) {
+      // Text piece
+      result.push({ type: 'text', content: blocksAndText[i] });
+    } else {
+      const blockContent = blocksAndText[i].trim();
+      const langMatch = blockContent.match(/^(\S+)(?:\s|$)/); // Extract the language reference
+      // Code block
+      if (langMatch) {
+        currentLang = langMatch[1];
+        const codeWithoutLang = blockContent.replace(langMatch[0], '').trim();
+        result.push({ type: 'code', content: codeWithoutLang, lang: currentLang });
+      } else {
+        // Check for the new chart block
+        try {
+          const chartObject = JSON.parse(blockContent);
+          if (chartObject.type && chartObject.data && chartObject.option) {
+            result.push({ type: 'chart', content: chartObject });
+          }
+        } catch (error) {
+          // Handle JSON parsing error if needed
+        }
+      }
+    }
+  }
+  return result;
+}

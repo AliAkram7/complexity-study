@@ -27,9 +27,9 @@ ChartJS.register(
     Title,
     Tooltip,
     Legend,
-    TimeScale, 
+    TimeScale,
     BarElement
-    
+
 );
 
 
@@ -39,83 +39,87 @@ ChartJS.register(
 export default function BarChart() {
 
 
-    const data = {
-        labels: ['insertion sort', 'selection sort', 'Merge sort', 'quick sort', 'heap sort' ],
-        datasets: [{
-            label: 'best case',
-            data: [0.701, 68.742, 1.698, 1.673,  3.906 ],
-            backgroundColor: [
-                '#2b8a3e',
-            ],
-            borderColor: [
-                
-                '#087f5b',
-            ],
-            borderWidth: 1
-        }, 
-        {
-            label: 'average case',
-            data: [1.744, 71.972, 1.638, 1.702, 8.419],
-            backgroundColor: [
-                '#fcc419',
-            
-            ],
-            borderColor: [
-                '#f59f00'
-            ],
-            borderWidth: 1
-        },
-        {
-            label: 'worst case',
-            data: [81.264,  75.919, 2.961, 2.079, 8.297],
-            backgroundColor: [
-                '#f03e3e'
-            ],
-            borderColor: [
-                '#c92a2a'
-            ],
-            borderWidth: 1
-        }
-    ]
-    };
+    const chart =  {
+        type : 'bar',
+        data : {
+            labels: ['insertion sort', 'selection sort', 'Merge sort', 'quick sort', 'heap sort'],
+            datasets: [{
+                label: 'best case',
+                data: [0.143, 47.529, 1.59, 1.648, 3.711],
+                backgroundColor: [
+                    '#2b8a3e',
+                ],
+                borderColor: [
 
-      const options = {
-        responsive: true,
-        animation: {
-            duration: 200,
-        },
-        plugins: {
-            title: {
-                display: true,
-                text: 'title ',
+                    '#087f5b',
+                ],
+                borderWidth: 1
             },
-        },
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'sorting algorithms'
-                },
-                max: 20
+            {
+                label: 'average case',
+                data: [43.07, 51.727, 1.668, 1.673, 3.771],
+                backgroundColor: [
+                    '#fcc419',
+
+                ],
+                borderColor: [
+                    '#f59f00'
+                ],
+                borderWidth: 1
             },
-            y: {
-                title: {
-                    display: true,
-                    text: 'execution time by ms'
-                },
-                max: 80,
+            {
+                label: 'worst case',
+                data: [63.316, 67.228, 1.704, 2.344, 5.513],
+                backgroundColor: [
+                    '#f03e3e'
+                ],
+                borderColor: [
+                    '#c92a2a'
+                ],
+                borderWidth: 1
             }
+            ]
+        },
+
+        options : {
+            responsive: true,
+            animation: {
+                duration: 200,
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'title ',
+                },
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'sorting algorithms'
+                    },
+                    max: 20
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'execution time by ms'
+                    },
+                    max: 70,
+                }
+            }
+
+
         }
-
-
     }
 
+    console.log(JSON.stringify(chart))
 
 
     return (<>
         <ScrollArea w={'100%'} h={'100%'}   >
             <div className={classes.chartContainer} >
-                <Bar data={data} style={{ position: 'relative' }} options={options} />
+                <Bar data={chart.data} style={{ position: 'relative' }} options={chart.options} />
             </div>
         </ScrollArea>
     </>)

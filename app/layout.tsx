@@ -13,7 +13,7 @@ import { IconHash, TablerIconsProps } from "@tabler/icons-react";
 
 export const metadata = {
   title: "complexity study",
-  description: "build with love from RSD student",
+  description: "build with love ❤️ in Mascara",
 };
 
 type MockData = {
