@@ -24,6 +24,7 @@ export async function generateStaticParams() {
 
 
   let { data }: any = await supabase
+    
     .from('category')
     .select(`
       category_address_link,
@@ -45,7 +46,9 @@ export default async function ArticlePage({ params }: { params: { category: stri
 
 
 
-  let { data }: PostgrestSingleResponse<ArticleType> = await supabase.from('article')
+  let { data }: PostgrestSingleResponse<ArticleType> = await supabase
+  
+  .from('article')
     .select('*')
     .eq('address_link', params.article)
     .single()

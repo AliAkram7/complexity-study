@@ -25,6 +25,7 @@ export async function generateStaticParams() {
 export default async function CategoryPage({ params }: { params: { category: string } }) {
 
     let { data: category } = await supabase.from('category')
+
         .select('*')
         .eq('category_address_link', params.category)
         .single()
@@ -32,7 +33,9 @@ export default async function CategoryPage({ params }: { params: { category: str
     if (!category) return <Center className={classes.articleContainer} > <NotFoundTitle /> </Center>
 
 
-    let { data: article }: PostgrestSingleResponse<ArticleType> = await supabase.from('article')
+    let { data: article }: PostgrestSingleResponse<ArticleType> = await supabase
+    
+    .from('article')
         .select('*')
         .eq('address_link', params.category)
         .single()
@@ -41,6 +44,7 @@ export default async function CategoryPage({ params }: { params: { category: str
     if (!article) {
 
         let { data: categoryFirstArticle }: PostgrestSingleResponse<ArticleType> = await supabase
+            
             .from('article')
             .select(`*`)
             .eq('category_id', category.id)

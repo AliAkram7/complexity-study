@@ -113,7 +113,6 @@ export default function BarChart() {
         }
     }
 
-    console.log(JSON.stringify(chart))
 
 
     return (<>
